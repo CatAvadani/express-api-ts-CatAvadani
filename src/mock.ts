@@ -11,16 +11,25 @@ export const pathToResource = '/api/resource';
 // Beskriv hur en entitet kan se ut:
 export const mockedEntityDefault: Entity = {
   id: '1',
-  // string: 'new entity',
-  // number: 100,
-  // date: new Date('2022-01-01'),
-  // list: [1, 2, 3],
+  name: 'Fundamentals Of JavaScript',
+  category: 'Development',
+  fields: ['Web Development', 'Programming Language'],
+  subject: 'JavaScript',
+  level: 'Beginner',
+  price: { amount: 50, currency: 'EUR' },
+  ratings: 5,
+  language: 'EN',
 };
+
 // Ge ett annat exempel på hur en entitet kan se ut:
 export const mockedEntityUpdated: Entity = {
   id: '2',
-  // string: 'updated entity',
-  // number: 149,
-  // date: new Date('2022-12-31'),
-  // list: [4, 4, 4],
+  name: 'Kotlin Development Masterclass',
+  category: 'Development',
+  fields: ['Programming Language', 'Mobile Development', 'Android'],
+  subject: '',
+  level: '',
+  price: { amount: 550, currency: 'SEK' },
+  ratings: 4,
+  language: 'SV',
 };
