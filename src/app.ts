@@ -91,7 +91,7 @@ let allCourses: Entity[] = [
     language: 'SV',
   },
   {
-    id: '7',
+    id: 7,
     name: 'User Experience (UX) - The Complete Guide',
     category: 'Design',
     fields: ['Graphic Design', 'Web Design', 'User Experience Design'],
@@ -136,14 +136,7 @@ app.post(pathToResource, (req, res) => {
   const newId = allCourses.length + 1;
   const newCourse: Entity = {
     id: newId,
-    name: req.body.name,
-    category: req.body.category,
-    fields: req.body.fields,
-    subject: req.body.subject,
-    level: req.body.level,
-    price: req.body.price,
-    ratings: req.body.ratings,
-    language: req.body.language,
+    ...req.body,
   };
   allCourses.push(newCourse);
 
@@ -153,7 +146,7 @@ app.post(pathToResource, (req, res) => {
 app.get(`${pathToResource}/:id`, (req, res) => {
   const courseId = parseInt(req.params.id);
 
-  const findCourse = allCourses.find((course) => course.id === courseId);
+  const findCourse = allCourses.find((course) => course.id == courseId);
   if (findCourse) {
     res.status(200).json(findCourse);
   } else {
@@ -165,7 +158,7 @@ app.put(`${pathToResource}/:id`, (req, res) => {
   const courseId = parseInt(req.params.id);
 
   const findCourseIndex = allCourses.findIndex(
-    (course) => course.id === courseId
+    (course) => course.id == courseId
   );
 
   if (findCourseIndex !== -1) {
@@ -185,7 +178,7 @@ app.put(`${pathToResource}/:id`, (req, res) => {
 app.delete(`${pathToResource}/:id`, (req, res) => {
   const courseId = parseInt(req.params.id);
 
-  const findIndex = allCourses.findIndex((course) => course.id === courseId);
+  const findIndex = allCourses.findIndex((course) => course.id == courseId);
   if (findIndex !== -1) {
     allCourses.splice(findIndex, 1);
     res.status(204).send();
