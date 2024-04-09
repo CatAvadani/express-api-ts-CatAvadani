@@ -142,8 +142,8 @@ app.post(pathToResource, (req, res) => {
     subject: req.body.subject,
     level: req.body.level,
     price: req.body.price,
-    language: req.body.language,
     ratings: req.body.ratings,
+    language: req.body.language,
   };
   allCourses.push(newCourse);
 
@@ -178,7 +178,7 @@ app.put(`${pathToResource}/:id`, (req, res) => {
     allCourses[findCourseIndex] = courseUpdated;
     res.status(200).json(courseUpdated);
   } else {
-    res.status(404).json('Course not found');
+    res.status(404).json({ message: 'Course not found' });
   }
 });
 
