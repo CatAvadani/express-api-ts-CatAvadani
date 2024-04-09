@@ -124,10 +124,72 @@ let allCourses: Entity[] = [
     language: 'EN',
   },
 ];
+
 export const app = express();
+app.use(express.json());
 
 app.get(pathToResource, (req, res) => {
-  res.json(allCourses);
+  res.status(200).json(allCourses);
 });
 
-// SKRIV DIN SERVERKOD HÄR! (Och ta bort denna kommentar.)
+app.post(pathToResource, (req, res) => {
+  const newId = allCourses.length + 1;
+  const newCourse: Entity = {
+    id: newId,
+    name: req.body.name,
+    category: req.body.category,
+    fields: req.body.fields,
+    subject: req.body.subject,
+    level: req.body.level,
+    price: req.body.price,
+    language: req.body.language,
+    ratings: req.body.ratings,
+  };
+  allCourses.push(newCourse);
+
+  res.status(201).json(newCourse);
+});
+
+app.get(`${pathToResource}/:id`, (req, res) => {
+  const courseId = parseInt(req.params.id);
+
+  const findCourse = allCourses.find((course) => course.id === courseId);
+  if (findCourse) {
+    res.status(200).json(findCourse);
+  } else {
+    res.status(404).send({ message: 'Course not found' });
+  }
+});
+
+app.put(`${pathToResource}/:id`, (req, res) => {
+  const courseId = parseInt(req.params.id);
+
+  const findCourseIndex = allCourses.findIndex(
+    (course) => course.id === courseId
+  );
+
+  if (findCourseIndex !== -1) {
+    const courseUpdated: Entity = {
+      ...allCourses[findCourseIndex],
+      ...req.body,
+      id: courseId,
+    };
+
+    allCourses[findCourseIndex] = courseUpdated;
+    res.status(200).json(courseUpdated);
+  } else {
+    res.status(404).json('Course not found');
+  }
+});
+
+app.delete(`${pathToResource}/:id`, (req, res) => {
+  const courseId = parseInt(req.params.id);
+
+  const findIndex = allCourses.findIndex((course) => course.id === courseId);
+  if (findIndex !== -1) {
+    allCourses.splice(findIndex, 1);
+    res.status(204).send();
+  } else {
+    res.status(404).send({ message: 'Course not found' });
+  }
+});
