@@ -1,0 +1,22 @@
+GET http://localhost:3000/api/resource
+
+###
+
+GET http://localhost:3000/api/resource/1712759571466
+
+
+###
+
+POST http://localhost:3000/api/resource
+Content-Type: application/json
+
+{
+    "name": "Visual Effects fot Games in Unity",
+    "category": "Design",
+    "fields": "Graphic Design', 'Animation', 'Game Development",
+    "subject": "Unity",
+    "level": "'Advanced",
+    "price": { "amount": 45, "currency": "EUR "},
+    "ratings": 4,
+    "language": "En"
+}

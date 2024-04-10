@@ -2,6 +2,8 @@ import express from 'express';
 import { pathToResource } from './mock';
 /* I den här filen ska du skriva din serverapplikation! */
 
+export const app = express();
+
 // Döp om till något som passar ditt API.
 export interface Entity {
   id: string | number;
@@ -125,7 +127,6 @@ let allCourses: Entity[] = [
   },
 ];
 
-export const app = express();
 app.use(express.json());
 
 app.get(pathToResource, (req, res) => {
@@ -133,9 +134,8 @@ app.get(pathToResource, (req, res) => {
 });
 
 app.post(pathToResource, (req, res) => {
-  const newId = allCourses.length + 1;
   const newCourse: Entity = {
-    id: newId,
+    id: Date.now().toString(),
     ...req.body,
   };
   allCourses.push(newCourse);
@@ -144,9 +144,9 @@ app.post(pathToResource, (req, res) => {
 });
 
 app.get(`${pathToResource}/:id`, (req, res) => {
-  const courseId = parseInt(req.params.id);
+  const courseId = req.params.id;
 
-  const findCourse = allCourses.find((course) => course.id == courseId);
+  const findCourse = allCourses.find((course) => course.id === courseId);
   if (findCourse) {
     res.status(200).json(findCourse);
   } else {
@@ -155,10 +155,10 @@ app.get(`${pathToResource}/:id`, (req, res) => {
 });
 
 app.put(`${pathToResource}/:id`, (req, res) => {
-  const courseId = parseInt(req.params.id);
+  const courseId = req.params.id;
 
   const findCourseIndex = allCourses.findIndex(
-    (course) => course.id == courseId
+    (course) => course.id === courseId
   );
 
   if (findCourseIndex !== -1) {
@@ -176,9 +176,9 @@ app.put(`${pathToResource}/:id`, (req, res) => {
 });
 
 app.delete(`${pathToResource}/:id`, (req, res) => {
-  const courseId = parseInt(req.params.id);
+  const courseId = req.params.id;
 
-  const findIndex = allCourses.findIndex((course) => course.id == courseId);
+  const findIndex = allCourses.findIndex((course) => course.id === courseId);
   if (findIndex !== -1) {
     allCourses.splice(findIndex, 1);
     res.status(204).send();
