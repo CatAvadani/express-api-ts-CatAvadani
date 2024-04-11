@@ -3,7 +3,7 @@
  * Tänk på att inte ändra variabelnamnen nedan utan bara det som tilldelas.
  */
 
-import { Entity } from './app';
+import { Entity } from './data';
 
 // Sökvägen till resursen i ditt API:
 export const pathToResource = '/api/resource';

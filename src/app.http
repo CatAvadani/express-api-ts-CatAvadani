@@ -2,7 +2,7 @@ GET http://localhost:3000/api/resource
 
 ###
 
-GET http://localhost:3000/api/resource/1712759571466
+GET http://localhost:3000/api/resource/1712809813401
 
 
 ###
@@ -11,10 +11,27 @@ POST http://localhost:3000/api/resource
 Content-Type: application/json
 
 {
-    "name": "Visual Effects fot Games in Unity",
+    "name": "Visual Effects for Games in Unity",
     "category": "Design",
-    "fields": "Graphic Design', 'Animation', 'Game Development",
+    "fields": ["Graphic Design', 'Animation', 'Game Development"],
     "subject": "Unity",
+    "level": "'Advanced",
+    "price": { "amount": 45, "currency": "EUR "},
+    "ratings": 4,
+    "language": "En"
+}
+
+
+### 
+
+PUT  http://localhost:3000/api/resource/3
+Content-Type: application/json
+
+{
+    "name": "Next.js - The Complete Guide",
+    "category": "Development",
+    "fields": ["Web Development", "Front End Development"],
+    "subject": "Next.js",
     "level": "'Advanced",
     "price": { "amount": 45, "currency": "EUR "},
     "ratings": 4,
