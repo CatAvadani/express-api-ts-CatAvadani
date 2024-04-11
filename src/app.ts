@@ -1,5 +1,6 @@
 import express from 'express';
-import { allCourses, Entity } from './data';
+import { Entity, allCourses, validationSchema } from './data';
+import { validateProperties, validationMiddleware } from './middlewares';
 import { pathToResource } from './mock';
 
 export const app = express();
@@ -8,16 +9,6 @@ app.use(express.json());
 
 app.get(pathToResource, (req, res) => {
   res.status(200).json(allCourses);
-});
-
-app.post(pathToResource, (req, res) => {
-  const newCourse: Entity = {
-    id: Date.now().toString(),
-    ...req.body,
-  };
-  allCourses.push(newCourse);
-
-  res.status(201).json(newCourse);
 });
 
 app.get(`${pathToResource}/:id`, (req, res) => {
@@ -31,26 +22,51 @@ app.get(`${pathToResource}/:id`, (req, res) => {
   }
 });
 
-app.put(`${pathToResource}/:id`, (req, res) => {
-  const courseId = req.params.id;
-
-  const findCourseIndex = allCourses.findIndex(
-    (course) => course.id === courseId
-  );
-
-  if (findCourseIndex !== -1) {
-    const courseUpdated: Entity = {
-      ...allCourses[findCourseIndex],
+app.post(
+  pathToResource,
+  validateProperties,
+  validationMiddleware(validationSchema),
+  (req, res) => {
+    const newCourse: Entity = {
+      id: Date.now().toString(),
       ...req.body,
-      id: courseId,
     };
+    allCourses.push(newCourse);
 
-    allCourses[findCourseIndex] = courseUpdated;
-    res.status(200).json(courseUpdated);
-  } else {
-    res.status(404).json({ message: 'Course not found' });
+    res.status(201).json(newCourse);
   }
-});
+);
+
+app.put(
+  `${pathToResource}/:id`,
+  validationMiddleware(validationSchema),
+  (req, res) => {
+    const courseId = req.params.id;
+
+    if (req.body.id && req.body.id !== courseId) {
+      return res
+        .status(400)
+        .json({ message: 'The course id cannot be changed' });
+    }
+
+    const findCourseIndex = allCourses.findIndex(
+      (course) => course.id === courseId
+    );
+
+    if (findCourseIndex !== -1) {
+      const courseUpdated: Entity = {
+        ...allCourses[findCourseIndex],
+        ...req.body,
+        id: courseId,
+      };
+
+      allCourses[findCourseIndex] = courseUpdated;
+      res.status(200).json(courseUpdated);
+    } else {
+      res.status(404).json({ message: 'Course not found' });
+    }
+  }
+);
 
 app.delete(`${pathToResource}/:id`, (req, res) => {
   const courseId = req.params.id;
@@ -62,4 +78,8 @@ app.delete(`${pathToResource}/:id`, (req, res) => {
   } else {
     res.status(404).send({ message: 'Course not found' });
   }
+});
+
+app.use('*', (req, res) => {
+  res.status(404).json('Url not found');
 });
