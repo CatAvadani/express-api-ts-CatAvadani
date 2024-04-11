@@ -1,5 +1,5 @@
 import express from 'express';
-import fs from 'fs';
+import fs from 'fs/promises';
 import { Entity, validationSchema } from './data';
 import { validateProperties, validationMiddleware } from './middlewares';
 import { pathToResource } from './mock';
@@ -8,14 +8,26 @@ export const app = express();
 
 app.use(express.json());
 
-const file = fs.readFileSync('db.json', 'utf-8');
-const data = JSON.parse(file);
+// const file = fs.readFileSync('db.json', 'utf-8');
+// const data = JSON.parse(file);
 
-app.get(pathToResource, (req, res) => {
+async function readData() {
+  try {
+    const file = await fs.readFile('db.json', 'utf-8');
+    return JSON.parse(file);
+  } catch (err) {
+    console.error('Read file error:', err);
+    return [];
+  }
+}
+
+app.get(pathToResource, async (req, res) => {
+  const data = await readData();
   res.status(200).json(data);
 });
 
-app.get(`${pathToResource}/:id`, (req, res) => {
+app.get(`${pathToResource}/:id`, async (req, res) => {
+  const data = await readData();
   const courseId = req.params.id;
 
   const findCourse = data.find((course: Entity) => course.id === courseId);
@@ -30,12 +42,15 @@ app.post(
   pathToResource,
   validateProperties,
   validationMiddleware(validationSchema),
-  (req, res) => {
+  async (req, res) => {
+    const data = await readData();
     const newCourse: Entity = {
       id: Date.now().toString(),
       ...req.body,
     };
+
     data.push(newCourse);
+    await fs.writeFile('db.json', JSON.stringify(data, null, 2));
     res.status(201).json(newCourse);
   }
 );
@@ -43,7 +58,8 @@ app.post(
 app.put(
   `${pathToResource}/:id`,
   validationMiddleware(validationSchema),
-  (req, res) => {
+  async (req, res) => {
+    const data = await readData();
     const courseId = req.params.id;
 
     if (req.body.id && req.body.id !== courseId) {
@@ -63,6 +79,7 @@ app.put(
         id: courseId,
       };
       data[findCourseIndex] = courseUpdated;
+      await fs.writeFile('db.json', JSON.stringify(data, null, 2));
       res.status(200).json(courseUpdated);
     } else {
       res.status(404).json({ message: 'Course not found' });
@@ -70,12 +87,14 @@ app.put(
   }
 );
 
-app.delete(`${pathToResource}/:id`, (req, res) => {
+app.delete(`${pathToResource}/:id`, async (req, res) => {
+  const data = await readData();
   const courseId = req.params.id;
 
   const findIndex = data.findIndex((course: Entity) => course.id === courseId);
   if (findIndex !== -1) {
     data.splice(findIndex, 1);
+    await fs.writeFile('db.json', JSON.stringify(data, null, 2));
     res.status(204).send();
   } else {
     res.status(404).send({ message: 'Course not found' });

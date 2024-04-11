@@ -2,7 +2,7 @@ GET http://localhost:3000/api/resource
 
 ###
 
-GET http://localhost:3000/api/resource/1712809813401
+GET http://localhost:3000/api/resource/6
 
 
 ###
