@@ -1,15 +1,16 @@
 import express from 'express';
 import fs from 'fs/promises';
-import { Entity, validationSchema } from './data';
-import { validateProperties, validationMiddleware } from './middlewares';
+import { validationMiddleware } from './middlewares';
 import { pathToResource } from './mock';
+import {
+  CreateValidationSchema,
+  Entity,
+  UpdateValidationSchema,
+} from './validationSchema';
 
 export const app = express();
 
 app.use(express.json());
-
-// const file = fs.readFileSync('db.json', 'utf-8');
-// const data = JSON.parse(file);
 
 async function readData() {
   try {
@@ -40,11 +41,10 @@ app.get(`${pathToResource}/:id`, async (req, res) => {
 
 app.post(
   pathToResource,
-  validateProperties,
-  validationMiddleware(validationSchema),
+  validationMiddleware(CreateValidationSchema),
   async (req, res) => {
     const data = await readData();
-    const newCourse: Entity = {
+    const newCourse = {
       id: Date.now().toString(),
       ...req.body,
     };
@@ -57,7 +57,7 @@ app.post(
 
 app.put(
   `${pathToResource}/:id`,
-  validationMiddleware(validationSchema),
+  validationMiddleware(UpdateValidationSchema),
   async (req, res) => {
     const data = await readData();
     const courseId = req.params.id;
@@ -95,12 +95,12 @@ app.delete(`${pathToResource}/:id`, async (req, res) => {
   if (findIndex !== -1) {
     data.splice(findIndex, 1);
     await fs.writeFile('db.json', JSON.stringify(data, null, 2));
-    res.status(204).send();
+    res.status(204).json(null);
   } else {
     res.status(404).send({ message: 'Course not found' });
   }
 });
 
 app.use('*', (req, res) => {
-  res.status(404).json('Url not found');
+  res.status(404).json({ message: 'Resource not found' });
 });

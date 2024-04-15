@@ -3,7 +3,7 @@
  * Tänk på att inte ändra variabelnamnen nedan utan bara det som tilldelas.
  */
 
-import { Entity } from './data';
+import { Entity } from './validationSchema';
 
 // Sökvägen till resursen i ditt API:
 export const pathToResource = '/api/resource';
