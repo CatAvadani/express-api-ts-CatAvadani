@@ -14,12 +14,16 @@ app.use(express.json());
 
 async function readData() {
   try {
-    const file = await fs.readFile('db.json', 'utf-8');
-    return JSON.parse(file);
+    const jsonData = await fs.readFile('db.json', 'utf-8');
+    return JSON.parse(jsonData);
   } catch (err) {
     console.error('Read file error:', err);
     return [];
   }
+}
+
+async function writeData(data: Entity[]) {
+  await fs.writeFile('db.json', JSON.stringify(data, null, 2));
 }
 
 app.get(pathToResource, async (req, res) => {
@@ -50,7 +54,7 @@ app.post(
     };
 
     data.push(newCourse);
-    await fs.writeFile('db.json', JSON.stringify(data, null, 2));
+    await writeData(data);
     res.status(201).json(newCourse);
   }
 );
@@ -79,7 +83,7 @@ app.put(
         id: courseId,
       };
       data[findCourseIndex] = courseUpdated;
-      await fs.writeFile('db.json', JSON.stringify(data, null, 2));
+      await writeData(data);
       res.status(200).json(courseUpdated);
     } else {
       res.status(404).json({ message: 'Course not found' });
@@ -94,7 +98,7 @@ app.delete(`${pathToResource}/:id`, async (req, res) => {
   const findIndex = data.findIndex((course: Entity) => course.id === courseId);
   if (findIndex !== -1) {
     data.splice(findIndex, 1);
-    await fs.writeFile('db.json', JSON.stringify(data, null, 2));
+    await writeData(data);
     res.status(204).json(null);
   } else {
     res.status(404).send({ message: 'Course not found' });
