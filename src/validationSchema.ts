@@ -24,6 +24,6 @@ export const UpdateValidationSchema = ValidationSchema.extend({
   id: z.union([z.string(), z.number()]).optional(),
 });
 
-export type Entity = z.infer<typeof ValidationSchema>;
+export type Course = z.infer<typeof ValidationSchema>;
 
-export type EntityCreate = z.infer<typeof CreateValidationSchema>;
+export type CreateCourse = z.infer<typeof CreateValidationSchema>;

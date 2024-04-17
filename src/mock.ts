@@ -3,13 +3,13 @@
  * Tänk på att inte ändra variabelnamnen nedan utan bara det som tilldelas.
  */
 
-import { Entity } from './validationSchema';
+import { Course } from './validationSchema';
 
 // Sökvägen till resursen i ditt API:
-export const pathToResource = '/api/resource';
+export const pathToResource = '/api/courses';
 
 // Beskriv hur en entitet kan se ut:
-export const mockedEntityDefault: Entity = {
+export const mockedEntityDefault: Course = {
   id: '1',
   name: 'Fundamentals Of JavaScript',
   category: 'Development',
@@ -22,7 +22,7 @@ export const mockedEntityDefault: Entity = {
 };
 
 // Ge ett annat exempel på hur en entitet kan se ut:
-export const mockedEntityUpdated: Entity = {
+export const mockedEntityUpdated: Course = {
   id: '2',
   name: 'Kotlin Development Masterclass',
   category: 'Development',

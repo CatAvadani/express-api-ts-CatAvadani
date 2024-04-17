@@ -3,8 +3,8 @@ import fs from 'fs/promises';
 import { validationMiddleware } from './middlewares';
 import { pathToResource } from './mock';
 import {
+  Course,
   CreateValidationSchema,
-  Entity,
   UpdateValidationSchema,
 } from './validationSchema';
 
@@ -22,7 +22,7 @@ async function readData() {
   }
 }
 
-async function writeData(data: Entity[]) {
+async function writeData(data: Course[]) {
   await fs.writeFile('db.json', JSON.stringify(data, null, 2));
 }
 
@@ -35,7 +35,7 @@ app.get(`${pathToResource}/:id`, async (req, res) => {
   const data = await readData();
   const courseId = req.params.id;
 
-  const findCourse = data.find((course: Entity) => course.id === courseId);
+  const findCourse = data.find((course: Course) => course.id === courseId);
   if (findCourse) {
     res.status(200).json(findCourse);
   } else {
@@ -73,11 +73,11 @@ app.put(
     }
 
     const findCourseIndex = data.findIndex(
-      (course: Entity) => course.id === courseId
+      (course: Course) => course.id === courseId
     );
 
     if (findCourseIndex !== -1) {
-      const courseUpdated: Entity = {
+      const courseUpdated: Course = {
         ...data[findCourseIndex],
         ...req.body,
         id: courseId,
@@ -95,7 +95,7 @@ app.delete(`${pathToResource}/:id`, async (req, res) => {
   const data = await readData();
   const courseId = req.params.id;
 
-  const findIndex = data.findIndex((course: Entity) => course.id === courseId);
+  const findIndex = data.findIndex((course: Course) => course.id === courseId);
   if (findIndex !== -1) {
     data.splice(findIndex, 1);
     await writeData(data);
