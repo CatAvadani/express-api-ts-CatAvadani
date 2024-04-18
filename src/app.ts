@@ -1,6 +1,6 @@
 import express from 'express';
 import fs from 'fs/promises';
-import { validationMiddleware } from './middlewares';
+import { validationMiddleware } from './validationMiddleware';
 import { pathToResource } from './mock';
 import {
   Course,
