@@ -1,43 +1,55 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/e_MbbZ7I)
+
 # Basic REST-API
 
-**Läs igenom hela uppgiftsbeskrivningen noggrant innan du börjar.**
 
-## Beskrivning
 
-I den här laborationen ska du individuellt skapa ett enklare REST-API i NodeJS med Express och Typescript. Då API:et skall har funktionalitet för CRUD skall det finnas endpoints inkluderat GET, DELETE, PUT och POST för en resurs. Varje endpoint skall utföra vad dess anropsmetod ämnar att utföra, dvs. POST för att lägga till, PUT för att uppdatera, GET för att hämta osv. Vad API:et hanterar för typ av resurs väljer du själva, dock ska det finns minst 4 st egenskaper för ett objekt varav en egenskap är id. Projektet skall inte ha någon databas utan istället ha all data sparad lokalt i serverprogrammet (exempelvis en array med produkter).
+## Description
 
-## Kodbasen
+This project is a simple REST API developed with Node.js, Express, and TypeScript. It is designed to manage educational course data, supporting CRUD operations—Create (POST), Read (GET), Update (PUT), and Delete (DELETE). Course resources are stored locally in the "db.json" file, without using an external database.
 
-Kör `npm install` för att komma igång. Det är rekommenderas du använder `npm test` för att utveckla ditt API. Det går även bra att starta dev-servern med `npm run dev` och manuellt testa API'et med VS Code tilläget REST Client.
+Data validation is performed through Zod, ensuring that only correct data is processed by the API. To maintain high standards of quality and reliability, the project is equipped with a suite of automated tests. These tests, provided by our teacher, verify that each endpoint operates as expected, conforming to the typical behaviors associated with CRUD operations.
 
-Utgå ifrån [app.ts](./src/app.ts) när du bygger din serverapplikation. Det finns även en [mock.ts](./src/mock.ts) fil där du kan beskriva hur ditt API ser ut för testerna.
 
-Om du har tänkt spara datan till fil behöver den filen heta `db.json` och ligga i rootmappen.
+## API Endpoints
 
-## Inlämning
+GET /api/courses
 
-För att bli godkänd på den här uppgiften MÅSTE du använda GIT och GitHub. Inlämningen sker som vanligt via läroplattformen där du ska zippa ihop din projektmapp. I din projektmapp ska det finnas (utöver all kod) en README.md fil. Den ska innehålla en titel, beskrivning av projektet, vilka krav som är uppfyllda, info om hur projektet byggs och körs. Kom ihåg att ta bort node_modules!!!
+Retrieves a list of all available courses.
 
-**Krav för godkänt:**
+POST /api/courses
 
-- [ ] Projektet innehåller CRUD endpoints (GET, POST, PUT & DELETE) för en resurs
-- [ ] Datan som API:et hanterar sparas lokalt i serverfilen
-- [ ] APIét ska svara med 404 om datan saknas.
-- [ ] Git & GitHub har använts
-- [ ] Projektmappen innehåller en README.md fil - (läs ovan för mer info)
-- [ ] Uppgiften lämnas in i tid!
+Adds a new course to the collection
 
-_Gjorda krav ska kryssas för_
+GET /api/courses/:id
 
-**Krav för väl godkänt:**
+Fetches a course by ID.
 
-- [ ] Alla punkter för godkänt är uppfyllda
-- [ ] Dina enpoints ska ha validering
-- [ ] Datan som API:et hanterar sparas till disk
+PUT /api/courses/:id
 
-_Gjorda krav ska kryssas för_
+Updates an existing course identified by id.
 
-_Do you have any questions or need something explained in English? - Please feel free to ask me during a lecture._
+DELETE /api/courses/:id
 
-**Good luck!**
+Removes the course from the collection by ID.
+
+## Setup Instructions
+
+Clone the repository:
+
+           git clone https://github.com/plugga-tech/express-api-ts-CatAvadani.git
+   
+Navigate to the project directory: 
+
+          cd express-api-ts-CatAvadani
+
+Install dependencies: 
+      
+          npm install
+
+Start the development server: 
+         
+         npm run dev
+
+Open http://localhost:3000 with your browser to see the result.
+
+
