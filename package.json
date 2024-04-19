@@ -1,11 +1,8 @@
 {
   "scripts": {
-    "postinstall": "npx plugga init",
     "start": "node dist/server.js",
     "build": "tsc",
-    "dev": "nodemon --transpile-only src/server.ts",
-    "test": "npx plugga test --vitest --ts",
-    "update": "npx plugga update"
+    "dev": "nodemon --transpile-only src/server.ts"
   },
   "dependencies": {
     "express": "^4.18.2",
@@ -13,7 +10,6 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
-    "@plugga-tech/express-api-ts": "^1.1.6",
     "@types/express": "^4.17.17",
     "@types/node": "^18.15.11",
     "nodemon": "^2.0.22",
