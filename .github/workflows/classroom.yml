@@ -19,7 +19,7 @@ jobs:
       uses: education/autograding-command-grader@v1
       with:
         test-name: Krav G
-        setup-command: exit 1 && npm install
+        setup-command: npm install
         command: npx plugga test --vitest --ts --run .g.
         timeout: 10
         max-score: 60
@@ -28,7 +28,7 @@ jobs:
       uses: education/autograding-command-grader@v1
       with:
         test-name: Krav VG
-        setup-command: exit 1 && npm install
+        setup-command: npm install
         command: npx plugga test --vitest --ts --run .vg.
         timeout: 10
         max-score: 40
